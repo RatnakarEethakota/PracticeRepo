@@ -1,0 +1,369 @@
+create database practice
+
+create table Employee (
+    ID int,
+    FName varchar(255),
+    Lname varchar(255),
+    DeptNo int
+);
+
+create table Department (
+    ID int,
+    EName varchar(255),
+    Deptname varchar(255),
+    DeptNo int
+);
+
+drop table Department
+
+
+create table Department (
+    ID int,
+    EName varchar(255),
+    Deptname varchar(255),
+    DeptNo int,
+	salary int,
+	Loc varchar(255)
+);
+
+
+
+insert into Employee (ID, FName, Lname, DeptNo)
+values ('1', 'Tom', 'Reddy', '22'),
+('2', 'Ajay','kumar','26'),
+('3', 'kiran', 'raj','24'),
+('4','uday','varma','25');
+
+select * from Employee
+
+insert into Department (ID, EName, Deptname, DeptNo, salary,Loc)
+values ('1', 'Tarun', 'sales', '26','25700','newyork'),
+('2', 'Vikram', 'Finance', '27','26000','canada'),
+('3', 'Pavan', 'Marketing', '28','27500','ireland'),
+('4', 'Ganesh', 'sales', '22','29000','uk');
+
+select * from Department
+
+
+#joins
+#crossjoin
+select *
+from Employee cross join Department
+
+
+#innerjoin
+Select *
+from Employee , Department
+where Employee.DeptNo = Department.DeptNo
+
+select *
+from Employee, Department
+where Employee.DeptNo= Department.DeptNo and DeptName='sales' and loc ='uk'
+
+select *
+from Employee , Department
+where Employee.DeptNo=Department.DeptNo and salary> 27000 and Loc='uk'
+
+#leftouter
+
+select *
+from Employee left join  Department
+on Employee.DeptNo=Department.DeptNo
+
+#rightouter
+
+select *
+from Employee right join  Department
+on Employee.DeptNo=Department.DeptNo
+
+#fullouter
+
+select *
+from Employee full outer join  Department
+on Employee.DeptNo=Department.DeptNo
+
+#selfjoin
+
+select *
+from Employee, Department
+where Employee.DeptNo=Department.DeptNo AND DeptName ='Marketing' ;
+
+
+
+#grouping
+
+create table emp(
+	EMPNO int,
+	ENAME varchar(50),
+	JOB varchar(50),
+	MGR int,
+	HIREDATE varchar(40),
+	SAL int,
+	COMM int,
+	DEPTNO int
+);
+
+drop table emp
+
+create table emp(
+	EMPNO int,
+	ENAME varchar(50),
+	JOB varchar(50),
+	MGR int,
+	HIREDATE varchar(40),
+	SAL int,
+	DEPTNO int
+);
+
+insert into emp(EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, DEPTNO)
+Values('7369','smith','clerk','7902','17-dec-80','800','20'),
+('7499','allen','salesman','7698','20-feb-81','1600','30'),
+('7521','ward','salesman','7698','22-feb-82','1250','30'),
+('7566','jones','manager','7839','02-apr-82','2975','20'),
+('7654','martin','salesman','7698','28-sept-81','1250','30'),
+('7698','blake','manager','7839','01-may-81','2850','30'),
+('7782','clark','manager','7839','09-jun-81','2450','10');
+
+#Number of employees working in each dept except the Employee working as clerk
+select deptno , count(*)
+from emp
+where job not in ('clerk')
+group by deptno;
+
+#maximum salary given to each job
+select job , max(sal)
+from emp
+group by job;
+
+#number of employees working in each job if the employees Have character 'A' in their names
+select job , count(*)
+from emp
+where ename like '%A%'
+group by job;
+
+#NUMBER OF EMPLOYEES WORKING IN EACH DEPARTEMENT EXCEPT PRESIDENT
+select deptno, count(*)
+from emp
+where job not in ('PRESIDENT')
+group by deptno;
+
+# TOTAL SALARY NEEDED TO PAY ALL THE EMPLOYEES IN EACH JOB
+select job , sum(SAL)
+from emp
+group by job;
+
+#NUMBER OF EMPLOYEEES WORKING AS MANAGER IN EACH DEPARTMENT
+select deptno, count(*)
+from emp
+where job='MANAGER'
+group by deptno;
+
+#AVG SALARY NEEDED TO PAY ALL THE EMPLOYEES IN EACH DEPARTMENT EXCLUDING THE EMPLOYEES OF DEPTNO 20
+select deptno, avg(sal)
+from emp
+where deptno not in (20)
+group by deptno;
+
+#NUMBER OF EMPLOYEES HAVING CHARACTER 'A' IN THEIR NAMES IN EACH JOB
+select job, count(*)
+from emp
+where ename like '%A%'
+group by job;
+
+#NUMBER OF EMPLOYEES AND AVG SALARY NEEDED TO PAY THE EMPLOYEES WHO SALARY IN GREATER THAN 2000 IN EACH DEPT
+select deptno, count(*) , avg(sal)
+frpm emp
+where sal> 2000
+group by deptno;
+
+#TOTAL SALARY NEEDED TO PAY AND NUMBER OF SALESMANS IN EACH DEPT
+select deptno, count(*) , sum(sal)
+from emp
+where job='SALESMAN'
+group by deptno;
+
+######having clause######
+
+# designations in which there are at lest 2 employees Present
+select job , count(*)
+from emp
+group by job
+having count(*)>=2;
+
+# names that are repeated .
+select ename , count(*)
+from emp
+group by ename
+having count(*) > 1;
+
+#names that are repeated exactly twice
+select ename , count(*)
+from emp
+group by ename
+having count(*) = 2 ;
+
+#salary that is repeated .
+select sal, count(*)
+from emp
+group by sal
+having count(*) > 1;
+
+#number of employees working in each dept having At least 2 emps Character 'A' or 'S' in their names .
+select deptno , count(*)
+from emp
+where ename like'%A%' or ename like '%S%'
+group by deptno
+having count(*)>=2;
+
+#job and total salary of each job , if the total salary of each job is greater than 3450 .
+select job , sum( SAL )
+from emp
+group by job
+having sum(sal) > 3450;
+
+#job and total salary of the employees if the employees are earning more than 1500.
+select job, sum( SAL )
+from emp
+where sal> 1500
+group by job;
+
+#Job wise maximum salary if the maximum salary of each job exceeds 2000 .
+select job , max( SAL )
+from emp
+group by job
+having max( sal ) > 2000;
+
+#number of emp earning sal more than 1200 in each job and the total sal needed to pay emp of each job must exceeds 3800
+select job , count(*) , sum(sal)
+from emp
+where sal > 1200
+group by job
+having sum(sal) > 3800;
+
+###aggregate functions###
+
+#maximum salary given to a manager .
+select max(sal)
+from emp
+where job ='MANAGER';
+
+#Total salary given to dept 10
+select sum(sal)
+from emp
+where deptno=10;
+
+#number of employees earing more than 1500 in dept 20
+select count(*)
+from emp
+where sal > 1500 and deptno = 20 ;
+
+#number of employee having 'E' in their names .
+select count(*)
+from emp
+where ename like '%E%' ;
+
+#minimum salary given to the employees working as clerk in Dept 10 or 20
+select min(sal)
+from emp
+where job ='CLERK' and deptno in ( 10 , 20 );
+
+#number of employees hired after 1982 and before 1985 into Dept 10 or 30 .
+select count(*)
+from emp
+where hiredate >'31-DEC-1982' and hiredate <'01-JAN-1985' and deptno in ( 10 , 30 );
+
+#maximum salary given to employees if the emp has character 'S' in the name and works as a Manager in dept 10 with as salary of more than 1800.
+select max(sal)
+from emp
+where ename like '%S%' and job ='MANAGER' and deptno = 10 and sal> 1800;
+
+#NUMBER OF EMPLOYEES GETTING SALARY LESS THAN 2000 IN DEPTNO 10
+select count(*)
+from emp
+where deptno = 10 and sal < 2000;
+
+#TOTAL SALARY NEEDED TO PAY EMPLOYEES WORKING AS CLERK
+select sum(sal)
+from emp
+where job='CLERK';
+
+#AVERAGE SALARY NEEDED TO PAY ALL EMPLOYEES
+select avg(sal)
+from emp;
+
+#NUMBER OF EMPLOYEES HAVING 'A' AS THEIR FIRST CHARACTER
+select count(*)
+from emp
+where ename like 'A%';
+
+#NUMBER OF EMPLOYEES WORKING AS CLERK OR MANAGER
+select count(*)
+from emp
+where job in('MANAGER' , 'CLERK' );
+
+#TOTAL SALARY NEEDED TO PAY EMPLOYEES HIRED IN FEB
+select sum(sal)
+from emp
+where hiredate like '%FEB%';
+
+#NUMBER OF EMPLOYEES REPORTING TO 7839 (MGR)
+select count(*)
+from emp
+where mgr = 7839;
+
+#AVG SAL , TOTAL SAL , NUMBER OF EMPS AND MAXIMUM SALARY GIVEN TO EMPLOYEES WORKING AS PERSIDENT
+select avg(sal),sum(sal),count(*),max(sal)
+from emp
+where job = 'PRESIDENT';
+
+#NUMBER OF EMPLOYEES HAVING 'A' IN THEIR NAMES
+select count(*)
+from emp
+where ename like'%A%';
+
+#NUMBER OF EMPS AND TOTAL SALary needed to pay THE EMPLOYEES WHO HAVE 2 CONSICUTIVE L s IN THEIR NAMES
+select count(*),sum(sal)
+from emp
+where ename like '%LL%';
+
+#NUMBER OF DEPARTMENTS PRESENT IN EMPLOYEE TABLE
+select count( distinct deptno )
+from emp;
+
+#NUMBER OF EMPLOYEES HAVING CHARACTER '_' IN THEIR NAMES
+select count(*)
+from emp
+where ename like '%!_%' escape '!';
+
+#NUMBER OF EMPLOYEES HAVING ATLEAST 2 PERCENTILES IN THEIR NAMES
+select count(*)
+from emp
+where ename like '%!%%!%%' escape '%';
+
+#TOTAL SALARY GIVEN TO EMPLOYEES WORKING AS CLERK IN DEPT 30
+select sum(sal)
+from emp
+where job ='CLERK' and deptno = 30;
+
+#MAXIMUM SALARY GIVEN TO THE EMPLOYEES WORKING AS ANALYST
+select max(sal)
+from emp
+where job ='ANALYST';
+
+#NUMBER OF DISTINCT SALARIES PRESENT IN EMPLOYEE TABLE
+select count( distinct sal )
+from emp ;
+
+#NUMBER OF JOBS PRESENT IN EMPLOYEE TABLE
+select count( distinct job )
+from emp
+
+#AVG SALARY GIVEN TO THE CLERK
+select avg(sal)
+from emp
+where job='CLERK';
+
+#MINIMUM SALARY GIVEN TO THE EMPLOYEES WHO WORK IN DEPT 10 AS MANAGER OR A CLERK
+select min(SAL)
+from emp
+where deptno = 10 and job in ( 'MANAGER' , 'CLERK' );
