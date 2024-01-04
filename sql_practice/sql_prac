@@ -1,0 +1,121 @@
+
+create table emp(
+	EMPNO int,
+	ENAME varchar(50),
+	JOB varchar(50),
+	MGR int,
+	HIREDATE varchar(40),
+	SAL int,
+	DEPTNO int
+);
+
+insert into emp(EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, DEPTNO)
+Values('7369','smith','clerk','7902','17-dec-80','800','20'),
+('7499','allen','salesman','7698','20-feb-81','1600','30'),
+('7521','ward','salesman','7698','22-feb-82','1250','30'),
+('7566','jones','manager','7839','02-apr-82','2975','20'),
+('7654','martin','salesman','7698','28-sept-81','1250','30'),
+('7698','blake','manager','7839','01-may-81','2850','30'),
+('7782','clark','manager','7839','09-jun-81','2450','10');
+
+
+
+--What is the total number of employees in the 'emp' table?
+select count(empno)
+from emp
+
+--Can you list the distinct job roles present in the 'emp' table?
+select count(distinct job)
+from emp
+
+--Provide the details (EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, DEPTNO) for the employee with EMPNO '7369'.
+select EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, DEPTNO
+from emp
+where empno='7369'
+
+--Who is the manager of employee '7521'?
+select mgr
+from emp
+where empno='7521'
+
+--List the employees who work in department '30'.
+select empno
+from emp
+where deptno='30'
+
+--What is the average salary of all employees in the 'emp' table?
+select avg(sal)
+from emp
+
+--Find the employee with the highest salary.
+select top 1 empno, ename, sal
+from emp
+order by sal desc
+
+--Calculate the total salary expenditure for each department.
+select deptno, sum(sal) as total_salary_expenditure
+from emp
+group by deptno;
+
+--How many employees were hired in the year 1981?
+--select count(*)
+--from emp
+--where  substring('hiredate',1,3)
+--select SUBSTRING(hiredate,8,2),hiredate from emp
+
+select empno
+from emp
+where RIGHT(hiredate, 2)='81'
+
+--Provide a list of employees hired in the month of February.
+select count(empno) as emp_count_feb_month
+from emp
+where substring(hiredate,4 ,3)='feb'
+
+select * from emp
+
+--What is the total salary expense for the 'salesman' job role?
+select  sum(sal) as salesaman_sal
+from emp
+where job ='salesman'
+
+--How many employees hold a 'clerk' position?
+select count(empno)
+from emp
+where job ='clerk'
+
+--Provide the details of employees in department '20'.
+select *
+from emp
+where deptno='20'
+
+--Calculate the average salary in department '10'
+select avg(sal) as dept10_sal
+from emp
+where deptno='10'
+
+--List the employees in department '30' who have a salary greater than 1500
+select empno
+from emp
+where deptno='30' and sal>1500
+
+--How many employees are there for each distinct job role in the 'emp' table?
+select count(empno) as emp_count,count(distinct job) as unique_job
+from emp
+
+--What is the salary range (minimum and maximum) for each job role?
+select job, min(sal) , max(sal)
+from emp
+group by job
+
+
+--Identify employees who have a salary between $2500 and $3000.
+select empno,ename
+from emp
+where sal between 2500 and 3000
+
+--Find the department with the highest average salary.
+
+select top 1 deptno from
+(select deptno,avg(sal) as ans from emp
+group by deptno)  a
