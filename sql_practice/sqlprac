@@ -330,7 +330,7 @@ where ename like '%LL%';
 select count( distinct deptno )
 from emp;
 
-#NUMBER OF EMPLOYEES HAVING CHARACTER '_' IN THEIR NAMES
+#NUMBER OF EMPLOYEES HAVING CHARACTER '_' IN THEIR NA
 select count(*)
 from emp
 where ename like '%!_%' escape '!';
