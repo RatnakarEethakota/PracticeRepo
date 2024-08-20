@@ -1,10 +1,6 @@
 # Databricks notebook source
 # DBTITLE 1,Mounting
-dbutils.fs.mount(
-    source='wasbs://raw@lakhsmistorage3.blob.core.windows.net',
-    mount_point='/mnt/azuredeproject',
-    extra_configs={'fs.azure.account.key.lakhsmistorage3.blob.core.windows.net':'ANxqNsu2j1oTIWYyee/x6ifkwKMRHmjtgqhkJnbVMyXR3nx50thBP+PBAkG2quIZrVsq/8QuE9xj+AStKtiUyg=='}
-)
+# Here we need to Put the mounting using access key, removed as it cause the repository violations
 
 # COMMAND ----------
 
